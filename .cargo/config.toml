@@ -1,17 +1,4 @@
 
-[build]
-
-rustdocflags = [
-  "--cfg",
-  "docsrs",
-]
-rustflags = [
-  "-C",
-  "target-feature=+sse2",
-  "-Z",
-  "new-llvm-pass-manager=no",
-]
-
 [target.aarch64-apple-darwin]
 rustflags = [
   "-Z",
