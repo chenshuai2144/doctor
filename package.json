@@ -1,6 +1,6 @@
 {
-  "name": "doctor",
-  "version": "0.0.0",
+  "name": "@umijs/doctor",
+  "version": "0.0.1",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
@@ -18,7 +18,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@napi-rs/cli": "^2.2.0"
+    "@napi-rs/cli": "^2.2.0",
+    "prettier": "^2.5.1"
   },
   "engines": {
     "node": ">= 10"
@@ -29,5 +30,18 @@
     "build:debug": "napi build --platform",
     "prepublishOnly": "napi prepublish -t npm",
     "version": "napi version"
-  }
+  },
+  "description": "一个用来检查 routers 配置的库。",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenshuai2144/doctor.git"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "author": "chenshuai2144",
+  "bugs": {
+    "url": "https://github.com/chenshuai2144/doctor/issues"
+  },
+  "homepage": "https://github.com/chenshuai2144/doctor#readme"
 }

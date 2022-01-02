@@ -1,5 +1,5 @@
 {
-  "name": "doctor-linux-arm64-musl",
+  "name": "@umijs/doctor-linux-arm64-musl",
   "version": "0.0.0",
   "os": [
     "linux"

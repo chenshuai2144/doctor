@@ -1,5 +1,5 @@
 {
-  "name": "doctor-linux-arm-gnueabihf",
+  "name": "@umijs/doctor-linux-arm-gnueabihf",
   "version": "0.0.0",
   "os": [
     "linux"

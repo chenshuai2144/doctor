@@ -1,5 +1,5 @@
 {
-  "name": "doctor-linux-x64-gnu",
+  "name": "@umijs/doctor-linux-x64-gnu",
   "version": "0.0.0",
   "os": [
     "linux"
