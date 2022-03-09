@@ -5,6 +5,9 @@
   "keywords": [
     "umi"
   ],
+  "bin": {
+    "doctor": "doctor.js"
+  },
   "homepage": "https://github.com/chenshuai2144/doctor#readme",
   "bugs": {
     "url": "https://github.com/chenshuai2144/doctor/issues"
@@ -22,6 +25,7 @@
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "test": "echo 0",
+    "prepublishOnly": "napi prepublish -t npm",
     "version": "napi version"
   },
   "devDependencies": {
