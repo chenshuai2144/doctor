@@ -1,22 +1,30 @@
 {
-  "name": "@umijs/doctor",
-  "version": "0.0.1",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "napi": {
-    "name": "doctor",
-    "triples": {
-      "additional": [
-        "aarch64-apple-darwin",
-        "aarch64-linux-android",
-        "aarch64-unknown-linux-gnu",
-        "aarch64-unknown-linux-musl",
-        "aarch64-pc-windows-msvc",
-        "armv7-unknown-linux-gnueabihf"
-      ]
-    }
+  "name": "doctor",
+  "version": "0.0.0",
+  "description": "一个用来检查 routers 配置的库。",
+  "keywords": [
+    "umi"
+  ],
+  "homepage": "https://github.com/chenshuai2144/doctor#readme",
+  "bugs": {
+    "url": "https://github.com/chenshuai2144/doctor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenshuai2144/doctor.git"
   },
   "license": "MIT",
+  "author": "chenshuai2144",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "echo 0",
+    "version": "napi version"
+  },
   "devDependencies": {
     "@napi-rs/cli": "^2.2.0",
     "prettier": "^2.5.1"
@@ -24,24 +32,12 @@
   "engines": {
     "node": ">= 10"
   },
-  "scripts": {
-    "artifacts": "napi artifacts",
-    "build": "napi build --platform --release",
-    "build:debug": "napi build --platform",
-    "prepublishOnly": "napi prepublish -t npm",
-    "version": "napi version"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
-  "description": "一个用来检查 routers 配置的库。",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chenshuai2144/doctor.git"
-  },
-  "keywords": [
-    "umi"
-  ],
-  "author": "chenshuai2144",
-  "bugs": {
-    "url": "https://github.com/chenshuai2144/doctor/issues"
-  },
-  "homepage": "https://github.com/chenshuai2144/doctor#readme"
+  "napi": {
+    "name": "doctor",
+    "triples": {}
+  }
 }

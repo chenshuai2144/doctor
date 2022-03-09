@@ -1,5 +1,5 @@
 {
-  "name": "@umijs/doctor-win32-x64-msvc",
+  "name": "doctor-win32-x64-msvc",
   "version": "0.0.0",
   "os": [
     "win32"

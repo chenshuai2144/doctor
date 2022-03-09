@@ -36,7 +36,6 @@ error[no-use-children]: 🚨 不应该使用 children 来配置子路由, childr
 
 ## redirect 路由中应该只配置 redirect 和 path 两个属性
 
-
 ```bash
 
 
@@ -51,18 +50,17 @@ error[redirect-only-has-redirect-and-path]: 🚨 redirect 路由中应该只配�
 61 | |   },
    | |___^
    |
-   
+
 ```
 
-## path发现重复，可能会导致路径渲染错误，请检查后删除
+## path 发现重复，可能会导致路径渲染错误，请检查后删除
 
-   
-   ```bash
+```bash
 error[redirect-only-has-redirect-and-path]: 🚨 path发现重复，可能会导致路径渲染错误，请检查后删除！
-  --> .\routes.ts:9:17
-   |
- 9 |           routes: [
-   |  _________________^
+--> .\routes.ts:9:17
+|
+9 |           routes: [
+|  _________________^
 10 | |           {
 11 | |             name: 'login',
 12 | |             path: './login',
@@ -74,6 +72,6 @@ error[redirect-only-has-redirect-and-path]: 🚨 path发现重复，可能会导
 18 | |             component: './user/Login',
 19 | |           },
 20 | |         ],
-   | |_________^
-   |
+| |_________^
+|
 ```
