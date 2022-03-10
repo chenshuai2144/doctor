@@ -157,34 +157,46 @@ pub fn check_publish(repo: String) {
 
 #[cfg(test)]
 mod tests {
+  use std::path::Path;
+
   use crate::{check_publish, check_routers, gen_all_changelogs, gen_changelogs};
 
   #[test]
   fn it_gen_changelogs() {
-    gen_changelogs(
-      "/Users/shuaichen/Documents/github/pro-components".to_string(),
-      Some(".changhelog2".to_string()),
-    );
+    if Path::new("/Users/shuaichen/Documents/github/pro-components").exists() {
+      gen_changelogs(
+        "/Users/shuaichen/Documents/github/pro-components".to_string(),
+        Some(".changhelog2".to_string()),
+      );
+    }
     assert_eq!(2 + 2, 4);
   }
 
   #[test]
   fn it_gen_all_changelogs() {
-    gen_all_changelogs(
-      "/Users/shuaichen/Documents/github/pro-components".to_string(),
-      None,
-    );
+    if Path::new("/Users/shuaichen/Documents/github/pro-components").exists() {
+      gen_all_changelogs(
+        "/Users/shuaichen/Documents/github/pro-components".to_string(),
+        None,
+      );
+    }
     assert_eq!(2 + 2, 4);
   }
 
   #[test]
   fn it_check_publish() {
-    check_publish("/Users/shuaichen/Documents/github/pro-components".to_string());
+    if Path::new("/Users/shuaichen/Documents/github/pro-components").exists() {
+      check_publish("/Users/shuaichen/Documents/github/pro-components".to_string());
+    }
     assert_eq!(2 + 2, 4);
   }
   #[test]
   fn it_check_routers() {
-    check_routers("/Users/shuaichen/Documents/github/ant-design-pro/config/routes.ts".to_string());
+    if Path::new("/Users/shuaichen/Documents/github/pro-components").exists() {
+      check_routers(
+        "/Users/shuaichen/Documents/github/ant-design-pro/config/routes.ts".to_string(),
+      );
+    }
     assert_eq!(2 + 2, 4);
   }
 }
