@@ -38,5 +38,3 @@ screenshot
 doctor.*.node
 .gitignore
 doctor.node
-index.js
-index.d.ts
