@@ -1,15 +1,28 @@
 #![deny(clippy::all)]
 
 use context::Context;
+pub mod changelog;
 pub mod context;
 pub mod diagnostic;
+pub mod error;
 pub mod handler;
+pub mod npm;
 pub mod rules;
 
 use diagnostic::display_diagnostics;
 use napi_derive::napi;
 use rules::get_all_rules_raw;
-use std::string::String;
+
+use std::{
+  fs::{self, create_dir, File},
+  io::Write,
+  path::PathBuf,
+  result,
+  string::String,
+};
+
+pub use crate::error::{Error, ErrorKind, Result};
+use crate::{changelog::Changelogs, npm::Npm};
 
 #[derive(Debug)]
 struct ReadFileError(String);
@@ -21,7 +34,7 @@ fn parse_program(
   file_name: &str,
   syntax: deno_ast::swc::parser::Syntax,
   source_code: String,
-) -> Result<deno_ast::ParsedSource, deno_ast::Diagnostic> {
+) -> result::Result<deno_ast::ParsedSource, deno_ast::Diagnostic> {
   deno_ast::parse_program(deno_ast::ParseParams {
     specifier: file_name.to_string(),
     media_type: deno_ast::MediaType::Unknown,
@@ -71,4 +84,55 @@ pub fn check(path_str: String) -> bool {
   pass = false;
 
   pass
+}
+
+fn create_md_file(package_path: String, content: String) {
+  let mut buffer = File::create(package_path).unwrap();
+  buffer.write_all(content.as_bytes()).unwrap();
+  buffer.flush().unwrap();
+}
+
+#[napi]
+pub fn gen_changelogs(repo: String) {
+  let mut path = PathBuf::new();
+  path.push(repo.clone());
+  path.push(".changelog");
+
+  let dir_path = path.display().to_string();
+  fs::remove_file(path.display().to_string()).expect("删除文件失败");
+  create_dir(dir_path).expect("创建 changelog 文件夹失败");
+
+  // 只写入 latest
+  let md_file_content_list = Changelogs::new(repo).get_change_log_list();
+  for md_file_content in md_file_content_list {
+    path.push(format!("{package}.md", package = md_file_content.package));
+    println!("-> 正在生成 {} 的 changelog", md_file_content.package);
+    create_md_file(path.display().to_string(), md_file_content.content);
+  }
+  println!("{:?}", "🆗 生成完成。");
+}
+
+#[napi]
+pub fn gen_all_changelogs(repo: String) {
+  let mut path = PathBuf::new();
+  path.push(repo.clone());
+  path.push(".changelog");
+
+  let dir_path = path.display().to_string();
+  fs::remove_file(path.display().to_string()).expect("删除文件失败");
+  create_dir(dir_path).expect("创建 changelog 文件夹失败");
+
+  // 只写入 latest
+  let md_file_content_list = Changelogs::new(repo).get_all_change_log_list();
+  for md_file_content in md_file_content_list {
+    path.push(format!("{package}.md", package = md_file_content.package));
+    println!("-> 正在生成 {} 的 changelog", md_file_content.package);
+    create_md_file(path.display().to_string(), md_file_content.content);
+  }
+  println!("{:?}", "🆗 生成完成。");
+}
+
+#[napi]
+pub fn check_publish(repo: String) {
+  Npm::new(repo).check();
 }

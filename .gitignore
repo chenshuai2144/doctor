@@ -35,6 +35,8 @@ screenshot
 .eslintcache
 .changelog
 .changelog.md
-doctor.win32-x64-msvc.node
+doctor.*.node
 .gitignore
 doctor.node
+index.js
+index.d.ts
