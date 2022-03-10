@@ -16,7 +16,7 @@ use rules::get_all_rules_raw;
 use std::{
   fs::{self, create_dir, File},
   io::Write,
-  path::PathBuf,
+  path::{Path, PathBuf},
   result,
   string::String,
 };
@@ -46,7 +46,7 @@ fn parse_program(
 }
 
 #[napi]
-pub fn check(path_str: String) -> bool {
+pub fn check_routers(path_str: String) -> bool {
   // 有没有通过lint
   let mut pass = false;
   // 读取文件内容
@@ -90,44 +90,62 @@ fn create_md_file(package_path: String, content: String) {
   let mut buffer = File::create(package_path).unwrap();
   buffer.write_all(content.as_bytes()).unwrap();
   buffer.flush().unwrap();
+  buffer.sync_all().unwrap();
 }
 
 #[napi]
-pub fn gen_changelogs(repo: String) {
-  let mut path = PathBuf::new();
-  path.push(repo.clone());
-  path.push(".changelog");
+pub fn gen_changelogs(repo: String, changelog_path: Option<String>) {
+  let mut repo_changelog_path = PathBuf::new();
+  let changelog_path = match changelog_path {
+    Some(p) => p,
+    None => "./changelogs".to_string(),
+  };
 
-  let dir_path = path.display().to_string();
-  fs::remove_file(path.display().to_string()).expect("删除文件失败");
+  repo_changelog_path.push(repo.clone());
+  repo_changelog_path.push(changelog_path);
+
+  let dir_path = repo_changelog_path.display().to_string();
+  if Path::new(&dir_path).exists() {
+    fs::remove_dir_all(repo_changelog_path.display().to_string())
+      .expect(format!("删除文件失败 {dir_path}", dir_path = dir_path).as_str());
+  }
   create_dir(dir_path).expect("创建 changelog 文件夹失败");
 
   // 只写入 latest
   let md_file_content_list = Changelogs::new(repo).get_change_log_list();
   for md_file_content in md_file_content_list {
-    path.push(format!("{package}.md", package = md_file_content.package));
+    let mut md_path = repo_changelog_path.clone();
+    md_path.push(format!("{package}.md", package = md_file_content.package));
     println!("-> 正在生成 {} 的 changelog", md_file_content.package);
-    create_md_file(path.display().to_string(), md_file_content.content);
+    create_md_file(md_path.display().to_string(), md_file_content.content);
   }
   println!("{:?}", "🆗 生成完成。");
 }
 
 #[napi]
-pub fn gen_all_changelogs(repo: String) {
-  let mut path = PathBuf::new();
-  path.push(repo.clone());
-  path.push(".changelog");
+pub fn gen_all_changelogs(repo: String, changelog_path: Option<String>) {
+  let mut repo_changelog_path = PathBuf::new();
+  let changelog_path = match changelog_path {
+    Some(p) => p,
+    None => "./changelogs".to_string(),
+  };
+  repo_changelog_path.push(repo.clone());
+  repo_changelog_path.push(changelog_path);
 
-  let dir_path = path.display().to_string();
-  fs::remove_file(path.display().to_string()).expect("删除文件失败");
+  let dir_path = repo_changelog_path.display().to_string();
+  if Path::new(&dir_path).exists() {
+    fs::remove_dir_all(repo_changelog_path.display().to_string())
+      .expect(format!("删除文件失败 {dir_path}", dir_path = dir_path).as_str());
+  }
   create_dir(dir_path).expect("创建 changelog 文件夹失败");
 
   // 只写入 latest
   let md_file_content_list = Changelogs::new(repo).get_all_change_log_list();
   for md_file_content in md_file_content_list {
-    path.push(format!("{package}.md", package = md_file_content.package));
+    let mut md_path = repo_changelog_path.clone();
+    md_path.push(format!("{package}.md", package = md_file_content.package));
     println!("-> 正在生成 {} 的 changelog", md_file_content.package);
-    create_md_file(path.display().to_string(), md_file_content.content);
+    create_md_file(md_path.display().to_string(), md_file_content.content);
   }
   println!("{:?}", "🆗 生成完成。");
 }
@@ -135,4 +153,38 @@ pub fn gen_all_changelogs(repo: String) {
 #[napi]
 pub fn check_publish(repo: String) {
   Npm::new(repo).check();
+}
+
+#[cfg(test)]
+mod tests {
+  use crate::{check_publish, check_routers, gen_all_changelogs, gen_changelogs};
+
+  #[test]
+  fn it_gen_changelogs() {
+    gen_changelogs(
+      "/Users/shuaichen/Documents/github/pro-components".to_string(),
+      Some(".changhelog2".to_string()),
+    );
+    assert_eq!(2 + 2, 4);
+  }
+
+  #[test]
+  fn it_gen_all_changelogs() {
+    gen_all_changelogs(
+      "/Users/shuaichen/Documents/github/pro-components".to_string(),
+      None,
+    );
+    assert_eq!(2 + 2, 4);
+  }
+
+  #[test]
+  fn it_check_publish() {
+    check_publish("/Users/shuaichen/Documents/github/pro-components".to_string());
+    assert_eq!(2 + 2, 4);
+  }
+  #[test]
+  fn it_check_routers() {
+    check_routers("/Users/shuaichen/Documents/github/ant-design-pro/config/routes.ts".to_string());
+    assert_eq!(2 + 2, 4);
+  }
 }

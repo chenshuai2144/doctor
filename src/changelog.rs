@@ -293,7 +293,7 @@ impl Changelogs {
       .get(&url)
       .header(
         "Authorization",
-        "token ".to_owned() + &env::var("GITHUB_TOKEN").unwrap(),
+        "token ".to_owned() + &env::var("GITHUB_TOKEN").expect("未找到 GITHUB_TOKEN"),
       )
       .header("Accept", "application/vnd.github.v3+json")
       .send()
