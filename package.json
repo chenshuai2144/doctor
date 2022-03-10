@@ -5,6 +5,10 @@
   "keywords": [
     "umi"
   ],
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "bin": {
     "doctor": "doctor.js"
   },
@@ -19,6 +23,7 @@
   "license": "MIT",
   "author": "chenshuai2144",
   "main": "index.js",
+  "module": "index.js",
   "types": "index.d.ts",
   "scripts": {
     "artifacts": "napi artifacts",
