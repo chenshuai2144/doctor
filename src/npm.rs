@@ -3,6 +3,8 @@ use reqwest::Client;
 use semver::Version;
 use serde::Deserialize;
 use serde_json;
+use std::env::consts::OS;
+use std::fmt::format;
 use std::{collections::HashMap, env, fs, io, process::Command};
 
 use crate::changelog::git::get_version;
@@ -26,6 +28,22 @@ pub struct Npm {
 }
 
 impl Npm {
+  fn get_path(&self) -> String {
+    if OS == "windows" {
+      return env::var("path")
+        .expect("获取 path 失败")
+        .split(";")
+        .find(|path| {
+          if path.contains("nodejs") {
+            return true;
+          }
+          false
+        })
+        .unwrap()
+        .to_string();
+    }
+    self.path.clone()
+  }
   pub fn check(&self) {
     let map = self.check_package_list_publish_success();
 
@@ -39,25 +57,16 @@ impl Npm {
 
     if all_published {
       println!("🆗 全部发布成功");
-    } else {
-      println!("😟 正在回滚！");
-      let pre_package_version_list = self.get_pre_package_version();
-      let path = env::var("path").unwrap();
-      let npm_path = path
-        .split(";")
-        .find(|path| {
-          if path.contains("nodejs") {
-            return true;
-          }
+      let npm_path = self.get_path();
 
-          false
-        })
-        .unwrap();
-
-      for pre_package_version in &pre_package_version_list {
+      for package_version in &self.package_list {
         println!(
           "📕 即将执行 npm dist-tag add {} latest",
-          pre_package_version
+          format!(
+            "{name}@{version}",
+            name = package_version.name,
+            version = package_version.version
+          )
         );
         println!("请输入opt,如果没有请留空：");
 
@@ -70,7 +79,11 @@ impl Npm {
           .current_dir(npm_path.clone())
           .arg("dist-tag")
           .arg("add")
-          .arg(pre_package_version)
+          .arg(format!(
+            "{name}@{version}",
+            name = package_version.name,
+            version = package_version.version
+          ))
           .arg("latest")
           .spawn()
           .expect("执行异常，提示")
@@ -94,6 +107,8 @@ impl Npm {
           );
         }
       }
+    } else {
+      println!("😟 发布失败了，等待 npm 回复再转化为正式版本。");
     }
   }
 

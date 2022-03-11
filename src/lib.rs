@@ -98,7 +98,7 @@ pub fn gen_changelogs(repo: String, changelog_path: Option<String>) {
   let mut repo_changelog_path = PathBuf::new();
   let changelog_path = match changelog_path {
     Some(p) => p,
-    None => "./changelogs".to_string(),
+    None => ".changelogs".to_string(),
   };
 
   repo_changelog_path.push(repo.clone());
@@ -127,7 +127,7 @@ pub fn gen_all_changelogs(repo: String, changelog_path: Option<String>) {
   let mut repo_changelog_path = PathBuf::new();
   let changelog_path = match changelog_path {
     Some(p) => p,
-    None => "./changelogs".to_string(),
+    None => ".changelogs".to_string(),
   };
   repo_changelog_path.push(repo.clone());
   repo_changelog_path.push(changelog_path);
