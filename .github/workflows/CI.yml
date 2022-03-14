@@ -44,14 +44,14 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
-              brew update && brew upgrade openssl@1.1;
+              brew update && brew install pkg-config;
               which cargo && cargo version && openssl version
               sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*;
               export CC=$(xcrun -f clang);
               export CXX=$(xcrun -f clang++);
               SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
               export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
-              OPENSSL_ROOT_DIR="/usr/local/opt/openssl@1.1/" yarn build --target=aarch64-apple-darwin
+              yarn build --target=aarch64-apple-darwin
               strip -x *.node
     name: stable - ${{ matrix.settings.target }} - node@16
     runs-on: ${{ matrix.settings.host }}
