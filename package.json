@@ -1,6 +1,6 @@
 {
   "name": "@umijs/doctor",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "一个用来检查 routers 配置的库。",
   "keywords": [
     "umi"
