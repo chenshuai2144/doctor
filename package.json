@@ -49,9 +49,9 @@
     "triples": {}
   },
   "optionalDependencies": {
-    "@umijs/doctor-win32-x64-msvc": "0.0.11",
-    "@umijs/doctor-darwin-x64": "0.0.11",
-    "@umijs/doctor-linux-x64-gnu": "0.0.11",
-    "@umijs/doctor-darwin-arm64": "0.0.11"
+    "@umijs/doctor-win32-x64-msvc": "^0.0.11",
+    "@umijs/doctor-darwin-x64": "^0.0.11",
+    "@umijs/doctor-linux-x64-gnu": "^0.0.11",
+    "@umijs/doctor-darwin-arm64": "^0.0.11"
   }
 }

@@ -3,31 +3,31 @@
 
 
 "@napi-rs/cli@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.npmmirror.com/@napi-rs/cli/download/@napi-rs/cli-2.2.0.tgz#0129406192c2dfff6e8fc3de0c8be1d2ec286e3f"
-  integrity sha512-lXOKq0EZWztzHIlpXhKG0Nrv/PDZAl/yBsqQTG0aDfdjGCJudtPgWLR7zzaJoYzkkdFJo0r+teYYzgC+cXB4KQ==
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@napi-rs/cli/-/cli-2.4.5.tgz#0f33e54e08c2e875c729697eb81f1c36342f0205"
+  integrity sha512-CLa3PSHh4Y760OXkHidzfHavVtfbQyfMhj3sWpta3SZjbWMk0tbdPhRez9y8KVApVVWjBxz5agEeFMfxxr+KTg==
 
-"@umijs/doctor-darwin-arm64@0.0.11":
+"@umijs/doctor-darwin-arm64@^0.0.11":
   version "0.0.11"
-  resolved "https://registry.npmmirror.com/@umijs/doctor-darwin-arm64/-/doctor-darwin-arm64-0.0.11.tgz#62217a71ff1e4c90a641f10bff93dfb2e533badd"
+  resolved "https://registry.yarnpkg.com/@umijs/doctor-darwin-arm64/-/doctor-darwin-arm64-0.0.11.tgz#62217a71ff1e4c90a641f10bff93dfb2e533badd"
   integrity sha512-Q+2CYqL4pFNP4+ucM+42/9DLQHofU5oaG3dx2/yeUe66VC8shph5BU79Wlheeb+W2fDbKnQ86WkGJXcZDdWQwg==
 
-"@umijs/doctor-darwin-x64@0.0.11":
+"@umijs/doctor-darwin-x64@^0.0.11":
   version "0.0.11"
-  resolved "https://registry.npmmirror.com/@umijs/doctor-darwin-x64/-/doctor-darwin-x64-0.0.11.tgz#c7873561ef3a76f15cf53f8652c6e7f84a3c6ccd"
+  resolved "https://registry.yarnpkg.com/@umijs/doctor-darwin-x64/-/doctor-darwin-x64-0.0.11.tgz#c7873561ef3a76f15cf53f8652c6e7f84a3c6ccd"
   integrity sha512-YRQ55v4rJzk6yJlpbnA8+ZLh/ueM4jdwJZ3jN0iH3R7Y2fg+Gh4PE+7/k7kXZclWwx61a0lfUbxcXryf+/iZ8Q==
 
-"@umijs/doctor-linux-x64-gnu@0.0.11":
+"@umijs/doctor-linux-x64-gnu@^0.0.11":
   version "0.0.11"
-  resolved "https://registry.npmmirror.com/@umijs/doctor-linux-x64-gnu/-/doctor-linux-x64-gnu-0.0.11.tgz#2357b6b3d5ca5511955470365ae0578584d6e8e4"
+  resolved "https://registry.yarnpkg.com/@umijs/doctor-linux-x64-gnu/-/doctor-linux-x64-gnu-0.0.11.tgz#2357b6b3d5ca5511955470365ae0578584d6e8e4"
   integrity sha512-0qTYQIe+uXRNvKqfXLmZt8/3Bs9fHQB5uMUeRIp8HGI5x3Ds1DaOfNR1UJRt7lcrEJ67rWa3sceuvyz7PUV6QA==
 
-"@umijs/doctor-win32-x64-msvc@0.0.11":
+"@umijs/doctor-win32-x64-msvc@^0.0.11":
   version "0.0.11"
-  resolved "https://registry.npmmirror.com/@umijs/doctor-win32-x64-msvc/-/doctor-win32-x64-msvc-0.0.11.tgz#ef76154a29c0926e0544d9e87b5dbc7c5dda7643"
+  resolved "https://registry.yarnpkg.com/@umijs/doctor-win32-x64-msvc/-/doctor-win32-x64-msvc-0.0.11.tgz#ef76154a29c0926e0544d9e87b5dbc7c5dda7643"
   integrity sha512-FXPdqw9L1TzskbeQmxVeM63s4B+zOBjcCnYHMfjgOiw8JccvTc9dZJ4Pk3NaUguhuXhZYUsQK285TqoJlZi+0A==
 
 prettier@^2.5.1:
   version "2.5.1"
-  resolved "https://registry.npmmirror.com/prettier/download/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
   integrity sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==
