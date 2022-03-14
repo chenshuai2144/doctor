@@ -4,7 +4,6 @@ use semver::Version;
 use serde::Deserialize;
 use serde_json;
 use std::env::consts::OS;
-use std::fmt::format;
 use std::{collections::HashMap, env, fs, io, process::Command};
 
 use crate::changelog::git::get_version;
