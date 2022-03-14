@@ -7,20 +7,25 @@
   resolved "https://registry.npmmirror.com/@napi-rs/cli/download/@napi-rs/cli-2.2.0.tgz#0129406192c2dfff6e8fc3de0c8be1d2ec286e3f"
   integrity sha512-lXOKq0EZWztzHIlpXhKG0Nrv/PDZAl/yBsqQTG0aDfdjGCJudtPgWLR7zzaJoYzkkdFJo0r+teYYzgC+cXB4KQ==
 
-"@umijs/doctor-darwin-x64@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmmirror.com/@umijs/doctor-darwin-x64/-/doctor-darwin-x64-0.0.3.tgz#f6cec9743c7b5f5214807de42fca3499d80b8cf4"
-  integrity sha512-nM77e23b+blgNvyPmpCUyVRIH8aAL7w7hHvOxvPZwx04PNJDd7DY4o3d91qDhXNmBABo7+VoArpgTRmGnwLz8g==
+"@umijs/doctor-darwin-arm64@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.npmmirror.com/@umijs/doctor-darwin-arm64/-/doctor-darwin-arm64-0.0.11.tgz#62217a71ff1e4c90a641f10bff93dfb2e533badd"
+  integrity sha512-Q+2CYqL4pFNP4+ucM+42/9DLQHofU5oaG3dx2/yeUe66VC8shph5BU79Wlheeb+W2fDbKnQ86WkGJXcZDdWQwg==
 
-"@umijs/doctor-linux-x64-gnu@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmmirror.com/@umijs/doctor-linux-x64-gnu/-/doctor-linux-x64-gnu-0.0.3.tgz#126adfa440d130e2ea6c669b9342a7903bfea089"
-  integrity sha512-RzHY2BjPYvBkUbDCaxQ6O3Hq0QZvvnIwbnVP9e1LD7EgGGeLbjZ0KcVxCYgktjpw5NSmEioPj7yRcg4JN2Bbzg==
+"@umijs/doctor-darwin-x64@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.npmmirror.com/@umijs/doctor-darwin-x64/-/doctor-darwin-x64-0.0.11.tgz#c7873561ef3a76f15cf53f8652c6e7f84a3c6ccd"
+  integrity sha512-YRQ55v4rJzk6yJlpbnA8+ZLh/ueM4jdwJZ3jN0iH3R7Y2fg+Gh4PE+7/k7kXZclWwx61a0lfUbxcXryf+/iZ8Q==
 
-"@umijs/doctor-win32-x64-msvc@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmmirror.com/@umijs/doctor-win32-x64-msvc/-/doctor-win32-x64-msvc-0.0.3.tgz#c3f81e1371be946cbfe9a54e76755d61b1ad2118"
-  integrity sha512-DNKogq2xTN5paXaT0GN4AYnKl45UGI7SvKKdaAvO/e3gkMGHz5BBEBgG7nq1UC8tzaCnM0B2wCE6xxr3RL/HKw==
+"@umijs/doctor-linux-x64-gnu@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.npmmirror.com/@umijs/doctor-linux-x64-gnu/-/doctor-linux-x64-gnu-0.0.11.tgz#2357b6b3d5ca5511955470365ae0578584d6e8e4"
+  integrity sha512-0qTYQIe+uXRNvKqfXLmZt8/3Bs9fHQB5uMUeRIp8HGI5x3Ds1DaOfNR1UJRt7lcrEJ67rWa3sceuvyz7PUV6QA==
+
+"@umijs/doctor-win32-x64-msvc@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.npmmirror.com/@umijs/doctor-win32-x64-msvc/-/doctor-win32-x64-msvc-0.0.11.tgz#ef76154a29c0926e0544d9e87b5dbc7c5dda7643"
+  integrity sha512-FXPdqw9L1TzskbeQmxVeM63s4B+zOBjcCnYHMfjgOiw8JccvTc9dZJ4Pk3NaUguhuXhZYUsQK285TqoJlZi+0A==
 
 prettier@^2.5.1:
   version "2.5.1"
