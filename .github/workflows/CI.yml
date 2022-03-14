@@ -44,7 +44,10 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
-              brew update && brew install pkg-config;
+              brew install openssl
+              export OPENSSL_INCLUDE_DIR=`brew --prefix openssl`/include
+              export OPENSSL_LIB_DIR=`brew --prefix openssl`/lib
+              cargo clean
               which cargo && cargo version && openssl version
               sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*;
               export CC=$(xcrun -f clang);
