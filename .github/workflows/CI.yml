@@ -44,6 +44,13 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
+              sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*;
+              export CC=$(xcrun -f clang);
+              export CXX=$(xcrun -f clang++);
+              SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
+              export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
+              cargo build -p swc_cli --release --target=aarch64-apple-darwin
+              cp ./target/aarch64-apple-darwin/release/swc .
               yarn build --target=aarch64-apple-darwin
               strip -x *.node
     name: stable - ${{ matrix.settings.target }} - node@16
