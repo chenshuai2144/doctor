@@ -30,7 +30,3 @@ napi-build = "1.2.1"
 
 [profile.release]
 lto = true
-
-[features]
-openssl = ["secure"]
-openssl-vendored = ["openssl", "openssl-sys"]
