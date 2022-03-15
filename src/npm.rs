@@ -4,6 +4,7 @@ use semver::Version;
 use serde::Deserialize;
 use serde_json;
 use std::env::consts::OS;
+use std::path::Path;
 use std::{collections::HashMap, env, fs, io, process::Command};
 
 use crate::changelog::git::get_version;
@@ -27,22 +28,6 @@ pub struct Npm {
 }
 
 impl Npm {
-  fn get_path(&self) -> String {
-    if OS == "windows" {
-      return env::var("path")
-        .expect("获取 path 失败")
-        .split(";")
-        .find(|path| {
-          if path.contains("nodejs") {
-            return true;
-          }
-          false
-        })
-        .unwrap()
-        .to_string();
-    }
-    self.path.clone()
-  }
   pub fn check(&self) {
     let map = self.check_package_list_publish_success();
 
@@ -110,7 +95,6 @@ impl Npm {
       println!("😟 发布失败了，等待 npm 回复再转化为正式版本。");
     }
   }
-
   pub fn check_package_list_publish_success(&self) -> HashMap<String, bool> {
     let mut map: HashMap<String, bool> = HashMap::new();
     for package_info in &self.package_list {
@@ -139,6 +123,7 @@ impl Npm {
       .json::<NpmPackageInfo>()
       .is_ok()
   }
+
   /**
    * 获取  latest 的最后一个版本
    */
@@ -153,6 +138,22 @@ impl Npm {
       .json::<NpmPackageInfo>()
       .unwrap()
       .version
+  }
+  fn get_path(&self) -> String {
+    if OS == "windows" {
+      return env::var("path")
+        .expect("获取 path 失败")
+        .split(";")
+        .find(|path| {
+          if path.contains("nodejs") {
+            return true;
+          }
+          false
+        })
+        .unwrap()
+        .to_string();
+    }
+    self.path.clone()
   }
 
   pub fn get_pre_package_version(&self) -> Vec<String> {
@@ -199,17 +200,24 @@ impl Npm {
     let packages_path = format!("{path}/packages/", path = path);
     let package_list: Vec<NpmPackageInfo> = fs::read_dir(&packages_path)
       .unwrap()
+      .filter(|entry| {
+        let entry = entry.as_ref().unwrap();
+        let path = entry.path();
+        let path = path.to_str().unwrap();
+        Path::new(path).is_dir()
+      })
       .map(|entry| {
         let entry = entry.unwrap();
         let path = entry.path();
         let path = path.to_str().unwrap();
+
         let data = fs::read_to_string(format!("{path}/package.json", path = path))
-          .expect("未找到 package.json");
+          .expect(format!("{path}/package.json", path = path).as_str());
 
         let package_info: NpmPackageInfo =
           serde_json::from_str(&data).expect("格式化  package.json失败 ");
 
-        package_info
+        return package_info;
       })
       .collect();
 
