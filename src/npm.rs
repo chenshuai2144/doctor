@@ -28,6 +28,7 @@ pub struct Npm {
 }
 
 impl Npm {
+  /* 如果有发布失败的包，那么就不执行 npm dist-tag add latest */
   pub fn check(&self) {
     let map = self.check_package_list_publish_success();
 
@@ -95,6 +96,7 @@ impl Npm {
       println!("😟 发布失败了，等待 npm 回复再转化为正式版本。");
     }
   }
+  /* 判断这个包是不是发布成功了 */
   pub fn check_package_list_publish_success(&self) -> HashMap<String, bool> {
     let mut map: HashMap<String, bool> = HashMap::new();
     for package_info in &self.package_list {
@@ -139,6 +141,8 @@ impl Npm {
       .unwrap()
       .version
   }
+
+  /* 获取 nodejs 的安装路径 */
   fn get_path(&self) -> String {
     if OS == "windows" {
       return env::var("path")
@@ -155,7 +159,7 @@ impl Npm {
     }
     self.path.clone()
   }
-
+  /* 获取 package.json 中的 version 字段 */
   pub fn get_pre_package_version(&self) -> Vec<String> {
     let repo = Repository::open(&self.path).unwrap();
     let mut tag_list = repo
