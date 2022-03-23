@@ -188,6 +188,9 @@ mod tests {
     if Path::new("/Users/shuaichen/Documents/github/pro-components").exists() {
       check_publish("/Users/shuaichen/Documents/github/pro-components".to_string());
     }
+    if Path::new("C:/github/pro-components").exists() {
+      check_publish("C:/github/pro-components".to_string());
+    }
     assert_eq!(2 + 2, 4);
   }
   #[test]

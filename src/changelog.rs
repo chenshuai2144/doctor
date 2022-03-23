@@ -81,6 +81,11 @@ impl Changelogs {
 
     md_file_content.push_str(&("## ".to_owned() + tag.name.as_str() + "\n\n"));
     md_file_content.push_str(format!("`{date_time}`\n\n", date_time = tag.date_time).as_str());
+
+    if change_logs.len() < 1 {
+      md_file_content.push_str("* 相关依赖更新\n");
+    }
+
     for changelog in change_logs {
       // 格式化成这个样子
       //  * feat(layout): mix support headerContent render [@chenshuai2144](https://github.com/chenshuai2144)
@@ -115,11 +120,6 @@ impl Changelogs {
         let change_logs = self
           .gen_change_log_by_commit_list(commit_and_tag.commit_list, package)
           .unwrap();
-
-        if change_logs.len() < 1 {
-          // 如果数量不够就直接退出
-          continue;
-        }
 
         let md_file_content = self.gen_change_log_to_md(&commit_and_tag.tag, change_logs);
 

@@ -5,6 +5,7 @@ use serde::Deserialize;
 use serde_json;
 use std::env::consts::OS;
 use std::path::Path;
+use std::sync::{Arc, Mutex};
 use std::{collections::HashMap, env, fs, io, process::Command};
 
 use crate::changelog::git::get_version;
@@ -15,7 +16,7 @@ pub const NPM: &'static str = "npm.cmd";
 #[cfg(not(windows))]
 pub const NPM: &'static str = "npm";
 
-#[derive(Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct NpmPackageInfo {
   name: String,
   version: String,
@@ -27,9 +28,72 @@ pub struct Npm {
   package_list: Vec<NpmPackageInfo>,
 }
 
+fn run_dist_tag(
+  package_version: NpmPackageInfo,
+  opt: Arc<Mutex<String>>,
+  npm_path: Arc<Mutex<String>>,
+) {
+  println!(
+    "📕 执行 npm dist-tag add {} latest",
+    format!(
+      "{name}@{version}",
+      name = package_version.name,
+      version = package_version.version
+    )
+  );
+  let output = Command::new(NPM)
+    .env("NPM_CONFIG_OTP", opt.lock().unwrap().clone())
+    .current_dir(npm_path.lock().unwrap().clone())
+    .arg("dist-tag")
+    .arg("add")
+    .arg(format!(
+      "{name}@{version}",
+      name = package_version.name,
+      version = package_version.version
+    ))
+    .arg("latest")
+    .spawn()
+    .expect("执行异常，提示")
+    .wait_with_output()
+    .unwrap();
+
+  let output_string = String::from_utf8_lossy(&output.stderr);
+
+  if !output_string.is_empty() {
+    println!(
+      "{}",
+      output_string.split("\n").collect::<Vec<&str>>().join("\n")
+    );
+  }
+  let output_string = String::from_utf8_lossy(&output.stdout).to_string();
+
+  if !output_string.is_empty() {
+    println!(
+      "{}",
+      output_string.split("\n").collect::<Vec<&str>>().join("\n")
+    );
+  }
+}
+
+async fn gen_package_version_list(
+  package_list: Vec<NpmPackageInfo>,
+  input: String,
+  npm_path: String,
+) {
+  let input = Arc::new(Mutex::new(input));
+  let npm_path = Arc::new(Mutex::new(npm_path));
+
+  for package_version in package_list {
+    let input = input.clone();
+    let npm_path = npm_path.clone();
+    tokio::spawn(async move { return run_dist_tag(package_version, input, npm_path) });
+  }
+}
+
 impl Npm {
   /* 如果有发布失败的包，那么就不执行 npm dist-tag add latest */
-  pub fn check(&self) {
+  #[tokio::main]
+  pub async fn check(&self) {
     let map = self.check_package_list_publish_success();
 
     let all_published = map.iter().any(|(package, published)| -> bool {
@@ -44,56 +108,14 @@ impl Npm {
       println!("🆗 全部发布成功");
       let npm_path = self.get_path();
 
-      for package_version in &self.package_list {
-        println!(
-          "📕 即将执行 npm dist-tag add {} latest",
-          format!(
-            "{name}@{version}",
-            name = package_version.name,
-            version = package_version.version
-          )
-        );
-        println!("请输入opt,如果没有请留空：");
-
-        let mut input = String::new();
-
-        io::stdin().read_line(&mut input).expect("读取失败");
-
-        let output = Command::new(NPM)
-          .env("NPM_CONFIG_OTP", input.trim())
-          .current_dir(npm_path.clone())
-          .arg("dist-tag")
-          .arg("add")
-          .arg(format!(
-            "{name}@{version}",
-            name = package_version.name,
-            version = package_version.version
-          ))
-          .arg("latest")
-          .spawn()
-          .expect("执行异常，提示")
-          .wait_with_output()
-          .unwrap();
-
-        let output_string = String::from_utf8_lossy(&output.stderr);
-
-        if !output_string.is_empty() {
-          println!(
-            "{}",
-            output_string.split("\n").collect::<Vec<&str>>().join("\n")
-          );
-        }
-        let output_string = String::from_utf8_lossy(&output.stdout).to_string();
-
-        if !output_string.is_empty() {
-          println!(
-            "{}",
-            output_string.split("\n").collect::<Vec<&str>>().join("\n")
-          );
-        }
-      }
+      // 读取 opt
+      println!("请输入opt,如果没有请留空：");
+      let mut input = String::new();
+      io::stdin().read_line(&mut input).expect("读取失败");
+      let package_list = self.package_list.clone();
+      gen_package_version_list(package_list, input, npm_path).await;
     } else {
-      println!("😟 发布失败了，等待 npm 回复再转化为正式版本。");
+      println!("😟 发布失败了，等待 npm 恢复再转化为正式版本。");
     }
   }
   /* 判断这个包是不是发布成功了 */
@@ -106,7 +128,6 @@ impl Npm {
     }
     map
   }
-
   /**
    * 判断这个版本是不是发布成功了
    */
@@ -159,6 +180,7 @@ impl Npm {
     }
     self.path.clone()
   }
+
   /* 获取 package.json 中的 version 字段 */
   pub fn get_pre_package_version(&self) -> Vec<String> {
     let repo = Repository::open(&self.path).unwrap();
