@@ -28,11 +28,11 @@ pub struct Npm {
   package_list: Vec<NpmPackageInfo>,
 }
 
-fn run_dist_tag(
+async fn run_dist_tag(
   package_version: NpmPackageInfo,
   opt: Arc<Mutex<String>>,
   npm_path: Arc<Mutex<String>>,
-) {
+) -> String {
   println!(
     "📕 执行 npm dist-tag add {} latest",
     format!(
@@ -73,6 +73,7 @@ fn run_dist_tag(
       output_string.split("\n").collect::<Vec<&str>>().join("\n")
     );
   }
+  output_string
 }
 
 async fn gen_package_version_list(
@@ -83,11 +84,24 @@ async fn gen_package_version_list(
   let input = Arc::new(Mutex::new(input));
   let npm_path = Arc::new(Mutex::new(npm_path));
 
-  for package_version in package_list {
-    let input = input.clone();
-    let npm_path = npm_path.clone();
-    tokio::spawn(async move { return run_dist_tag(package_version, input, npm_path) });
+  let tasks: Vec<_> = package_list
+    .into_iter()
+    .map(|package_version| async {
+      let input = input.clone();
+      let npm_path = npm_path.clone();
+      let out_string = run_dist_tag(package_version, input, npm_path).await;
+      out_string
+    })
+    .collect();
+
+  let mut out_string_list: Vec<String> = vec![];
+  for task in tasks {
+    out_string_list.push(task.await);
   }
+  println!(
+    "😄 全部执行完成：{}",
+    out_string_list.join("\n").to_string().trim()
+  );
 }
 
 impl Npm {
