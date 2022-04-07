@@ -291,15 +291,11 @@ impl Changelogs {
 
     let body: GithubRepo = client
       .get(&url)
-      .header(
-        "Authorization",
-        "token ".to_owned() + &env::var("GITHUB_TOKEN").expect("未找到 GITHUB_TOKEN"),
-      )
       .header("Accept", "application/vnd.github.v3+json")
       .send()
       .unwrap()
       .json()
-      .unwrap();
+      .expect("json 转化失败，请检查是网络错误，或者 GITHUB_TOKEN 是否失效！");
 
     let html_url = body.html_url;
 

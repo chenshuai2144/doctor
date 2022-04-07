@@ -157,12 +157,14 @@ pub fn check_publish(repo: String) {
 
 #[cfg(test)]
 mod tests {
-  use std::path::Path;
+  use std::{env, path::Path};
 
   use crate::{check_publish, check_routers, gen_all_changelogs, gen_changelogs};
 
   #[test]
   fn it_gen_changelogs() {
+    let token = &env::var("GITHUB_TOKEN").expect("未找到 GITHUB_TOKEN");
+    println!("{:?}", token);
     if Path::new("/Users/shuaichen/Documents/github/pro-components").exists() {
       gen_changelogs(
         "/Users/shuaichen/Documents/github/pro-components".to_string(),
