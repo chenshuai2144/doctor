@@ -152,13 +152,18 @@ impl Npm {
       version = version
     );
 
-    self
+    println!("🔍 检查 {}@{} 的发布状态", name, version);
+
+    let json = self
       .client
       .get(&endpoint)
       .send()
       .unwrap()
       .json::<NpmPackageInfo>()
-      .is_ok()
+      .expect("获取包信息失败");
+
+    println!("{:?}", json);
+    json.version == version
   }
 
   /**
@@ -264,7 +269,7 @@ impl Npm {
     println!("🔍 发现了{} 个 包 ->", &package_list.len());
     println!("-------------------");
     for package in &package_list {
-      println!("📦 {}", package.name)
+      println!("📦 {}@{}", package.name, package.version)
     }
 
     println!("🔚🔚🔚🔚🔚🔚🔚🔚🔚🔚🔚");
