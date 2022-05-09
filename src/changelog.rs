@@ -83,7 +83,7 @@ impl Changelogs {
     md_file_content.push_str(format!("`{date_time}`\n\n", date_time = tag.date_time).as_str());
 
     if change_logs.len() < 1 {
-      md_file_content.push_str("* 相关依赖更新\n");
+      md_file_content.push_str("* 依赖库更新\n");
     }
 
     for changelog in change_logs {

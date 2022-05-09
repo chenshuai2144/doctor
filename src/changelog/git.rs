@@ -310,8 +310,6 @@ pub fn get_commit_list_by_commit_range(
   let start = commit_range.start;
   let end = commit_range.end;
 
-  println!("{:?}, {:?}", start, end);
-
   let end_is_first_commit = match end.parent(0) {
     Err(_err) => true,
     _ => false,
