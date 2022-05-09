@@ -158,11 +158,6 @@ impl Changelogs {
         .gen_change_log_by_commit_list(commit_list, package)
         .expect("生成changelog 失败，请重试");
 
-      if change_logs.len() < 1 {
-        // 如果数量不够就直接退出
-        continue;
-      }
-
       let md_file_content = self.gen_change_log_to_md(&tag, change_logs);
 
       md_packages.insert(

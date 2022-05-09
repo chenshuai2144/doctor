@@ -179,6 +179,9 @@ pub fn get_commit_latest_range<'r>(
     1 => (tags.get(len - 1), None),
     _ => (tags.get(len - 1), tags.get(len - 2)),
   };
+
+  println!("commit range: {:?} - {:?}", start, end);
+
   // Value has to be `Some()` here.
   let start_str = start.expect("Tag should have a value.");
   let (start, end) = match (start_str, end) {
@@ -220,7 +223,6 @@ pub fn get_commit_latest_range<'r>(
       name: ((*start_str).to_owned()),
     },
   };
-
   Ok(cr)
 }
 
@@ -308,6 +310,8 @@ pub fn get_commit_list_by_commit_range(
   let start = commit_range.start;
   let end = commit_range.end;
 
+  println!("{:?}, {:?}", start, end);
+
   let end_is_first_commit = match end.parent(0) {
     Err(_err) => true,
     _ => false,
@@ -347,7 +351,6 @@ pub fn latest_commits(repo: &Repository, package_name: &str) -> crate::Result<(T
   let tag = commit_range.clone().latest_tag;
 
   let commits = get_commit_list_by_commit_range(&repo, commit_range).unwrap();
-
   Ok((tag, commits))
 }
 

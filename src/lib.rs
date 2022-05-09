@@ -160,7 +160,6 @@ mod tests {
   use std::{env, path::Path};
 
   use crate::{check_publish, check_routers, gen_all_changelogs, gen_changelogs};
-
   #[test]
   fn it_gen_changelogs() {
     let token = &env::var("GITHUB_TOKEN").expect("未找到 GITHUB_TOKEN");
