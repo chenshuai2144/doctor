@@ -233,7 +233,8 @@ impl Changelogs {
         pr_number = pr_number.replace("#", "").trim(),
         repo_name = self.repo_name,
       );
-      let body: GithubPull = self
+
+      let body = self
         .client
         .get(&pr_url)
         .header(
@@ -243,16 +244,22 @@ impl Changelogs {
         .header("Accept", "application/vnd.github.v3+json")
         .send()
         .unwrap()
-        .json()
-        .unwrap();
+        .json::<GithubPull>();
 
-      self
-        .author_github_map
-        .insert(author.to_string(), body.user.login);
+      if body.is_ok() {
+        let pr = body.unwrap();
+        self
+          .author_github_map
+          .insert(author.to_owned(), pr.user.login.to_owned());
+      }
     }
 
     // 返回 map 里面对于 name 的映射
-    self.author_github_map.get(author).unwrap().to_string()
+    let author_for_map = self.author_github_map.get(author);
+    if author_for_map.is_some() {
+      return author_for_map.unwrap().to_string();
+    }
+    author.to_string()
   }
   /**
    * 初始化，需要添加项目的地址
