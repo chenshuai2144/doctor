@@ -1,6 +1,6 @@
 {
   "name": "@umijs/doctor-darwin-x64",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "os": [
     "darwin"
   ],
