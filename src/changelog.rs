@@ -5,7 +5,7 @@ use reqwest::Client;
 use serde::Deserialize;
 use std::{collections::HashMap, env, ops::Index};
 
-use self::git::{full_commits, latest_commits, Commit, Tag};
+use self::git::{full_commits, latest_commits, Commit};
 
 pub struct Changelogs {
   repo: Repository,
@@ -95,6 +95,7 @@ impl Changelogs {
   pub fn get_all_change_log_list(&mut self) -> Vec<MARKDOWN> {
     let mut md_packages: Vec<MARKDOWN> = vec![];
     let package_list = [
+      "components",
       "utils",
       "layout",
       "form",
@@ -103,7 +104,6 @@ impl Changelogs {
       "field",
       "card",
       "descriptions",
-      "components",
     ];
     for package in package_list {
       let mut package_md: Vec<String> = vec![];
@@ -117,6 +117,12 @@ impl Changelogs {
 
         let md_file_content = self.gen_change_log_to_md(change_logs);
 
+        let tag = commit_and_tag.tag;
+        if package == "components" {
+          package_md.push(("\n## ".to_owned() + tag.name.as_str() + "\n\n").to_string());
+          package_md.push(format!("`{date_time}`\n\n", date_time = tag.date_time).to_string());
+        }
+
         package_md.insert(package_md.len(), md_file_content);
       }
 
@@ -124,7 +130,7 @@ impl Changelogs {
         md_packages.len(),
         MARKDOWN {
           package: package.to_owned(),
-          content: package_md.join("\n\n"),
+          content: package_md.join(""),
         },
       )
     }

@@ -148,12 +148,17 @@ pub fn gen_all_changelogs(repo: String, changelog_path: Option<String>) {
 
   // 只写入 latest
   let md_file_content_list = Changelogs::new(repo).get_all_change_log_list();
+  let mut md_path = repo_changelog_path.clone();
+  md_path.push("components.md");
+  let mut md_str_list: Vec<String> = vec![];
+
   for md_file_content in md_file_content_list {
-    let mut md_path = repo_changelog_path.clone();
-    md_path.push(format!("{package}.md", package = md_file_content.package));
+    md_str_list.push(md_file_content.content.to_string());
     println!("-> 正在生成 {} 的 changelog", md_file_content.package);
-    create_md_file(md_path.display().to_string(), md_file_content.content);
   }
+
+  create_md_file(md_path.display().to_string(), md_str_list.join(""));
+
   println!("{:?}", "🆗 生成完成。");
 }
 
