@@ -76,15 +76,8 @@ impl Changelogs {
 
     Ok(changelog_list)
   }
-  pub fn gen_change_log_to_md(&mut self, tag: &Tag, change_logs: Vec<String>) -> String {
+  pub fn gen_change_log_to_md(&mut self, change_logs: Vec<String>) -> String {
     let mut md_file_content: String = "".to_owned();
-
-    md_file_content.push_str(&("## ".to_owned() + tag.name.as_str() + "\n\n"));
-    md_file_content.push_str(format!("`{date_time}`\n\n", date_time = tag.date_time).as_str());
-
-    if change_logs.len() < 1 {
-      md_file_content.push_str("* 依赖库更新\n");
-    }
 
     for changelog in change_logs {
       // 格式化成这个样子
@@ -110,6 +103,7 @@ impl Changelogs {
       "field",
       "card",
       "descriptions",
+      "components",
     ];
     for package in package_list {
       let mut package_md: Vec<String> = vec![];
@@ -121,7 +115,7 @@ impl Changelogs {
           .gen_change_log_by_commit_list(commit_and_tag.commit_list, package)
           .unwrap();
 
-        let md_file_content = self.gen_change_log_to_md(&commit_and_tag.tag, change_logs);
+        let md_file_content = self.gen_change_log_to_md(change_logs);
 
         package_md.insert(package_md.len(), md_file_content);
       }
@@ -136,10 +130,12 @@ impl Changelogs {
     }
     md_packages
   }
+
   // 获取所有包的change log，会循环一下
   pub fn get_change_log_list(&mut self) -> Vec<MARKDOWN> {
     let mut md_packages: Vec<MARKDOWN> = vec![];
     let package_list = [
+      "components",
       "utils",
       "layout",
       "form",
@@ -158,7 +154,13 @@ impl Changelogs {
         .gen_change_log_by_commit_list(commit_list, package)
         .expect("生成changelog 失败，请重试");
 
-      let md_file_content = self.gen_change_log_to_md(&tag, change_logs);
+      let mut md_file_content: String = "".to_owned();
+      if package == "components" {
+        md_file_content.push_str(&("## ".to_owned() + tag.name.as_str() + "\n\n"));
+        md_file_content.push_str(format!("`{date_time}`\n\n", date_time = tag.date_time).as_str());
+      }
+
+      md_file_content.push_str(self.gen_change_log_to_md(change_logs).as_str());
 
       md_packages.insert(
         md_packages.len(),

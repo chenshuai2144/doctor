@@ -170,7 +170,7 @@ pub fn get_commit_latest_range<'r>(
     tag_list
       .into_iter()
       .filter_map(|x| x)
-      .filter(|x| x.starts_with(package_name)),
+      .filter(|x| x.starts_with(package_name) && !x.contains("experimental")),
   );
   let len = tags.len();
 
