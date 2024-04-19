@@ -210,7 +210,7 @@ pub fn get_commit_latest_range<'r>(
       .peel_to_commit()
       .expect("There's no commit at the end point"),
     latest_tag: Tag {
-      date_time: NaiveDateTime::from_timestamp(
+      date_time: DateTime::from_timestamp(
         start
           .peel_to_commit()
           .expect("There's no commit at the start point")
@@ -218,6 +218,7 @@ pub fn get_commit_latest_range<'r>(
           .seconds(),
         0,
       )
+      .expect("There's no commit at the start point")
       .format("%Y-%m-%d")
       .to_string(),
       name: ((*start_str).to_owned()),
@@ -284,7 +285,7 @@ pub fn get_all_tag_range<'r>(
         .peel_to_commit()
         .expect("There's no commit at the end point"),
       latest_tag: Tag {
-        date_time: NaiveDateTime::from_timestamp(
+        date_time: DateTime::from_timestamp(
           start
             .peel_to_commit()
             .expect("There's no commit at the start point")
@@ -292,6 +293,7 @@ pub fn get_all_tag_range<'r>(
             .seconds(),
           0,
         )
+        .expect("There's no commit at the start point")
         .format("%Y-%m-%d")
         .to_string(),
         name: ((*start_str).to_owned()),
@@ -329,8 +331,10 @@ pub fn get_commit_list_by_commit_range(
     let hash = format!("{}", commit.id());
     let author = commit.author().name().map(|name| name.to_owned());
     let timestamp = commit.time().seconds();
-    let naive_datetime = NaiveDateTime::from_timestamp(timestamp, 0);
-    let datetime: DateTime<Utc> = DateTime::from_utc(naive_datetime, Utc);
+    let naive_datetime = DateTime::from_timestamp(timestamp, 0)
+      .expect("Invalid timestamp")
+      .naive_utc();
+    let datetime: DateTime<Utc> = DateTime::from_naive_utc_and_offset(naive_datetime, Utc);
     commits.push(Commit {
       message,
       hash,

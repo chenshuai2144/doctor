@@ -1,0 +1,77 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+optionalDependencies:
+  '@umijs/doctor-darwin-arm64':
+    specifier: ^0.0.11
+    version: 0.0.11
+  '@umijs/doctor-darwin-x64':
+    specifier: ^0.0.11
+    version: 0.0.11
+  '@umijs/doctor-linux-x64-gnu':
+    specifier: ^0.0.11
+    version: 0.0.11
+  '@umijs/doctor-win32-x64-msvc':
+    specifier: ^0.0.11
+    version: 0.0.11
+
+devDependencies:
+  '@napi-rs/cli':
+    specifier: ^2.2.0
+    version: 2.18.2
+  prettier:
+    specifier: ^2.5.1
+    version: 2.8.8
+
+packages:
+
+  /@napi-rs/cli@2.18.2:
+    resolution: {integrity: sha512-IXQji3IF5eStxTHe/PxDSRjPrFymYAQ5FbIvqurxzxyWR8nJql9mtvmCP8y2g8tSoW5xhaToLQW0+mO3lUZq4w==}
+    engines: {node: '>= 10'}
+    hasBin: true
+    dev: true
+
+  /@umijs/doctor-darwin-arm64@0.0.11:
+    resolution: {integrity: sha512-Q+2CYqL4pFNP4+ucM+42/9DLQHofU5oaG3dx2/yeUe66VC8shph5BU79Wlheeb+W2fDbKnQ86WkGJXcZDdWQwg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/doctor-darwin-x64@0.0.11:
+    resolution: {integrity: sha512-YRQ55v4rJzk6yJlpbnA8+ZLh/ueM4jdwJZ3jN0iH3R7Y2fg+Gh4PE+7/k7kXZclWwx61a0lfUbxcXryf+/iZ8Q==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/doctor-linux-x64-gnu@0.0.11:
+    resolution: {integrity: sha512-0qTYQIe+uXRNvKqfXLmZt8/3Bs9fHQB5uMUeRIp8HGI5x3Ds1DaOfNR1UJRt7lcrEJ67rWa3sceuvyz7PUV6QA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/doctor-win32-x64-msvc@0.0.11:
+    resolution: {integrity: sha512-FXPdqw9L1TzskbeQmxVeM63s4B+zOBjcCnYHMfjgOiw8JccvTc9dZJ4Pk3NaUguhuXhZYUsQK285TqoJlZi+0A==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /prettier@2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: true
