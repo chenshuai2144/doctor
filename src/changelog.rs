@@ -47,17 +47,17 @@ impl Changelogs {
     let mut commit_hash_map: HashMap<String, bool> = HashMap::new();
 
     for commit in commit_list {
-      let message = commit.message().split("\n").nth(0).unwrap();
+      let message = commit.message().split("\n").nth(0).expect("信息转化失败");
       let hash = commit.hash().to_string();
 
-      let re = Regex::new(r"[fix|feat]\(([0-9a-zA-Z_]*)\)").unwrap();
+      let re = Regex::new(r"[fix|feat]\(([0-9a-zA-Z_]*)\)").expect("正则表达式转化失败");
 
       let mut need_insert_message = false;
 
       if re.is_match(message) {
         if re
           .captures(message)
-          .unwrap()
+          .expect("正则表达式转化失败")
           .index(1)
           .to_lowercase()
           .eq(package)
@@ -108,12 +108,13 @@ impl Changelogs {
     for package in package_list {
       let mut package_md: Vec<String> = vec![];
       let commit_and_tag_list =
-        full_commits(&self.repo, &("@ant-design/pro-".to_owned() + package)).unwrap();
+        full_commits(&self.repo, &("@ant-design/pro-".to_owned() + package))
+          .expect("获取commit失败");
 
       for commit_and_tag in commit_and_tag_list {
         let change_logs = self
           .gen_change_log_by_commit_list(commit_and_tag.commit_list, package)
-          .unwrap();
+          .expect("生成changelog 失败，请重试");
 
         let md_file_content = self.gen_change_log_to_md(change_logs);
 
@@ -154,7 +155,8 @@ impl Changelogs {
 
     for package in package_list {
       let (tag, commit_list) =
-        latest_commits(&self.repo, &("@ant-design/pro-".to_owned() + package)).unwrap();
+        latest_commits(&self.repo, &("@ant-design/pro-".to_owned() + package))
+          .expect("获取包名失败");
 
       let change_logs = self
         .gen_change_log_by_commit_list(commit_list, package)
@@ -181,9 +183,14 @@ impl Changelogs {
   }
 
   pub fn get_md_message(&mut self, commit: &Commit) -> String {
-    let message = commit.message().split("\n").nth(0).unwrap().trim();
+    let message = commit
+      .message()
+      .split("\n")
+      .nth(0)
+      .expect(" 信息不存在")
+      .trim();
 
-    let author = commit.author().as_ref().unwrap();
+    let author = commit.author().as_ref().expect("author 不存在");
     let md_hash = commit.hash().trim();
     let short_md_hash = &md_hash[0..7];
 
@@ -247,7 +254,7 @@ impl Changelogs {
         .get(&pr_url)
         .header(
           "Authorization",
-          "token ".to_owned() + &env::var("GITHUB_TOKEN").unwrap(),
+          "token ".to_owned() + &env::var("GITHUB_TOKEN").expect("GITHUB_TOKEN 未找到"),
         )
         .header("Accept", "application/vnd.github.v3+json")
         .send()
